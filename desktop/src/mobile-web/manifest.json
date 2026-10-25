@@ -1,0 +1,9 @@
+{
+  "name": "HomeCloud Wi-Fi Sync",
+  "short_name": "HomeCloud",
+  "start_url": "/mobile/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "description": "Automatic Wi-Fi Photo & Video Backup to HomeCloud Desktop"
+}

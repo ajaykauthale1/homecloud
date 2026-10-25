@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "HomeCloud Sync",
+    "owner": "kauthalejay40s-team",
+    "slug": "kauthalejay",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "android": {
+      "package": "com.homecloud.sync",
+      "usesCleartextTraffic": true,
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.CAMERA",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.WAKE_LOCK",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.READ_MEDIA_AUDIO",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow HomeCloud to automatically back up your photos over Home Wi-Fi.",
+          "savePhotosPermission": "Allow HomeCloud to access your photo library.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow HomeCloud to scan the Desktop QR code for instant pairing."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "26f83b5c-570e-4be0-8ec2-cccc20e4b20d"
+      }
+    }
+  }
+}

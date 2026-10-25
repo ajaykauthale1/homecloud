@@ -1,0 +1,20 @@
+{
+  "name": "homecloud-desktop",
+  "version": "1.0.0",
+  "description": "HomeCloud Desktop - Automatic Wi-Fi Photo & Video Backup Server and Gallery",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "server-only": "node src/server-cli.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "exif-parser": "^0.1.12",
+    "express": "^4.21.2",
+    "multer": "^2.5.0",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

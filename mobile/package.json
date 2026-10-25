@@ -1,0 +1,42 @@
+{
+  "name": "homecloud-mobile",
+  "version": "1.0.0",
+  "main": "App.js",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/netinfo": "12.0.1",
+    "expo": "~58.0.19",
+    "expo-background-fetch": "~58.0.11",
+    "expo-camera": "~58.0.12",
+    "expo-device": "~58.0.5",
+    "expo-file-system": "~58.0.11",
+    "expo-media-library": "~58.0.12",
+    "expo-network": "~58.0.4",
+    "expo-status-bar": "~58.0.4",
+    "expo-task-manager": "~58.0.12",
+    "react": "19.3.0",
+    "react-native": "0.88.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "babel-preset-expo": "^58.0.20"
+  },
+  "overrides": {
+    "@xmldom/xmldom": "^0.9.12",
+    "fast-xml-parser": "^5.11.2",
+    "image-size": "^2.0.4",
+    "node-forge": "file:./shims/node-forge",
+    "postcss": "^8.5.31",
+    "selfsigned": "^5.5.0",
+    "send": "^1.2.1",
+    "tar": "^7.5.22",
+    "uuid": "^14.0.3",
+    "zod": "^4.6.7"
+  },
+  "private": true
+}

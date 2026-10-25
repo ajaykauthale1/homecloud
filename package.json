@@ -1,0 +1,12 @@
+{
+  "name": "homecloud-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "HomeCloud — Automatic Wi-Fi Photo & Video Backup (Desktop GUI + Android Mobile App)",
+  "scripts": {
+    "desktop": "npm --prefix desktop start",
+    "desktop:server": "npm --prefix desktop run server-only",
+    "mobile": "npm --prefix mobile start",
+    "mobile:android": "npm --prefix mobile run android"
+  }
+}

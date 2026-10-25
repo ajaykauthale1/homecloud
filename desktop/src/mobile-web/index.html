@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#090d16" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="manifest" href="/mobile/manifest.json" />
+  <title>HomeCloud Mobile Sync</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #111827;
+      --card-inner: #161f33;
+      --border: #1f2937;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 18px 16px 50px;
+      max-width: 540px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .logo {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0ea5e9, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 22px;
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.35);
+    }
+    .wifi-pill {
+      margin-left: auto;
+      background: rgba(34, 197, 94, 0.16);
+      color: #4ade80;
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 14px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #4ade80;
+      font-weight: 700;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+    .sub {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: linear-gradient(135deg, #0ea5e9, #3b82f6);
+      color: #fff;
+      font-weight: 700;
+      font-size: 15.5px;
+      padding: 15px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      margin-top: 14px;
+      text-align: center;
+    }
+    .btn-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      padding: 13px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+      text-align: center;
+    }
+    .progress-box {
+      display: none;
+      background: var(--card-inner);
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+    .bar-bg {
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      width: 0%;
+      transition: width 0.2s;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .stat-item {
+      background: var(--card-inner);
+      padding: 12px 8px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .recent-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .recent-grid img, .recent-grid video {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 8px;
+      background: var(--card-inner);
+    }
+    input[type="file"] { display: none; }
+    .install-banner {
+      display: none;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .btn-install {
+      background: var(--accent);
+      color: #090d16;
+      border: none;
+      font-weight: 700;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">☁</div>
+    <div>
+      <h2 style="font-size:19px;">HomeCloud Sync</h2>
+      <div class="sub" id="serverName">Connecting to Desktop on Wi-Fi...</div>
+    </div>
+    <span class="wifi-pill" id="wifiPill">Wi-Fi Connected</span>
+  </div>
+
+  <div class="install-banner" id="installBanner">
+    <div class="sub" style="color:#e2e8f0;">Install <strong>HomeCloud</strong> to your phone home screen for 1-tap Wi-Fi sync</div>
+    <button class="btn-install" id="btnInstallPwa">Install App</button>
+  </div>
+
+  <div class="card">
+    <div class="status-row">
+      <span class="dot" id="statusDot"></span>
+      <span id="connText">Paired with Home Wi-Fi Vault</span>
+    </div>
+    <div class="sub">
+      All new photos & videos are automatically deduplicated and organized by capture date (<strong>YYYY/MM</strong>) on your PC.
+    </div>
+
+    <label class="btn-primary">
+      <span>📸 Sync Photos & Videos Now</span>
+      <input type="file" id="fileInput" multiple accept="image/*,video/*" />
+    </label>
+
+    <label class="btn-secondary">
+      <span>📂 Sync Entire Camera Folder (DCIM)</span>
+      <input type="file" id="folderInput" webkitdirectory directory multiple />
+    </label>
+
+    <a href="/HomeCloud.apk" download="HomeCloud.apk" class="btn-secondary" style="text-decoration:none;border-color:#38bdf8;color:#38bdf8;">
+      <span>🤖 Download Native Android Background APK (HomeCloud.apk)</span>
+    </a>
+
+    <div class="progress-box" id="progressBox">
+      <div id="progressText" style="font-size:13.5px;font-weight:600;">Checking for new photos...</div>
+      <div class="bar-bg"><div class="bar-fill" id="barFill"></div></div>
+      <div class="sub" id="progressSub">0 / 0</div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num" id="statPhotos">0</div>
+        <div class="stat-lbl">Photos in Vault</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statVideos">0</div>
+        <div class="stat-lbl">Videos in Vault</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="statDeviceSynced">0</div>
+        <div class="stat-lbl">From This Phone</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3 style="font-size:15px;">Recently Backed Up on PC</h3>
+      <span class="sub" id="vaultCountText">0 items</span>
+    </div>
+    <div class="recent-grid" id="recentGrid"></div>
+  </div>
+
+  <script>
+    const deviceId = localStorage.getItem('hc_device_id') || ('android-' + Math.random().toString(36).slice(2, 9));
+    localStorage.setItem('hc_device_id', deviceId);
+
+    function detectPhoneName() {
+      const ua = navigator.userAgent || '';
+      const match = ua.match(/Android\s[\d.]+;\s([^;)]+)/i);
+      if (match && match[1]) return match[1].trim();
+      if (/iPhone/i.test(ua)) return 'iPhone';
+      return 'Android Phone';
+    }
+
+    const deviceName = detectPhoneName();
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').style.display = 'flex';
+    });
+
+    document.getElementById('btnInstallPwa').addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('installBanner').style.display = 'none';
+    });
+
+    async function pairAndRefresh() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const pairCode = params.get('code') || '';
+
+        const pairRes = await fetch('/api/pair', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deviceId, deviceName, platform: 'Android', pairCode })
+        });
+        const pairData = await pairRes.json();
+        if (pairData.device) {
+          document.getElementById('statDeviceSynced').textContent = pairData.device.totalSynced || 0;
+        }
+
+        const hbRes = await fetch('/api/heartbeat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deviceId, deviceName, platform: 'Android' })
+        });
+        const hbData = await hbRes.json();
+        document.getElementById('serverName').textContent = `Connected to ${hbData.serverName} (Same Wi-Fi)`;
+        if (hbData.stats) {
+          document.getElementById('statPhotos').textContent = hbData.stats.photoCount;
+          document.getElementById('statVideos').textContent = hbData.stats.videoCount;
+          document.getElementById('vaultCountText').textContent = `${hbData.stats.totalCount} total`;
+        }
+
+        const mediaRes = await fetch('/api/media?limit=9');
+        const mediaData = await mediaRes.json();
+        const grid = document.getElementById('recentGrid');
+        if (mediaData.items && mediaData.items.length > 0) {
+          grid.innerHTML = mediaData.items.slice(0, 9).map((item) => {
+            const url = `/media/${encodeURI(item.relativePath)}`;
+            return item.mediaType === 'video'
+              ? `<video src="${url}#t=0.5" muted preload="metadata"></video>`
+              : `<img src="${url}" loading="lazy" />`;
+          }).join('');
+        } else {
+          grid.innerHTML = `<div class="sub" style="grid-column:1/-1;padding:12px 0;">No photos synced yet. Tap Sync above to start!</div>`;
+        }
+      } catch (e) {
+        document.getElementById('connText').textContent = 'Waiting for Home Wi-Fi Connection';
+        document.getElementById('wifiPill').textContent = 'Offline';
+      }
+    }
+
+    async function handleFileBatch(fileList) {
+      const mediaExts = /\.(jpe?g|png|heic|webp|gif|mp4|mov|mkv|avi)$/i;
+      const files = Array.from(fileList || []).filter(
+        (f) => f.type.startsWith('image/') || f.type.startsWith('video/') || mediaExts.test(f.name)
+      );
+      if (!files.length) return;
+
+      const box = document.getElementById('progressBox');
+      const text = document.getElementById('progressText');
+      const sub = document.getElementById('progressSub');
+      const fill = document.getElementById('barFill');
+      box.style.display = 'block';
+
+      text.textContent = `Checking ${files.length} items against PC vault...`;
+      fill.style.width = '5%';
+
+      // Fast incremental pre-check so already backed up files are skipped immediately
+      const checkRes = await fetch('/api/check-sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          deviceId,
+          assets: files.map((f, idx) => ({
+            id: `${f.name}:${f.size}:${idx}`,
+            filename: f.name,
+            size: f.size,
+            creationTime: f.lastModified
+          }))
+        })
+      });
+      const checkData = await checkRes.json();
+      const unsyncedSet = new Set(checkData.unsyncedIds || []);
+      const toUpload = files.filter((f, idx) => unsyncedSet.has(`${f.name}:${f.size}:${idx}`));
+      const preSkipped = files.length - toUpload.length;
+
+      if (toUpload.length === 0) {
+        fill.style.width = '100%';
+        text.textContent = `✅ All ${files.length} selected items are already backed up!`;
+        sub.textContent = `0 new uploads needed (${preSkipped} duplicates skipped)`;
+        return;
+      }
+
+      let uploaded = 0;
+      let skipped = preSkipped;
+
+      for (let i = 0; i < toUpload.length; i++) {
+        const f = toUpload[i];
+        text.textContent = `Backing up ${f.name}...`;
+        sub.textContent = `${i + 1} of ${toUpload.length} new files (${skipped} skipped)`;
+        fill.style.width = `${Math.round(((i + 1) / toUpload.length) * 100)}%`;
+
+        fetch('/api/sync-progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            deviceId,
+            deviceName,
+            status: 'syncing',
+            current: i + 1,
+            total: toUpload.length,
+            lastFile: f.name
+          })
+        }).catch(() => {});
+
+        const form = new FormData();
+        form.append('file', f);
+        form.append('assetId', `${f.name}:${f.size}`);
+        form.append('deviceId', deviceId);
+        form.append('deviceName', deviceName);
+        form.append('originalName', f.name);
+        form.append('capturedAt', String(f.lastModified || Date.now()));
+        form.append('mediaType', f.type.startsWith('video') ? 'video' : 'photo');
+
+        const r = await fetch('/api/upload', { method: 'POST', body: form });
+        const result = await r.json();
+        if (result.duplicate) skipped++;
+        else uploaded++;
+      }
+
+      await fetch('/api/sync-progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deviceId, deviceName, status: 'completed' })
+      });
+
+      text.textContent = `✅ Sync Complete! (${uploaded} backed up, ${skipped} duplicates skipped)`;
+      pairAndRefresh();
+    }
+
+    document.getElementById('fileInput').addEventListener('change', (e) => handleFileBatch(e.target.files));
+    document.getElementById('folderInput').addEventListener('change', (e) => handleFileBatch(e.target.files));
+
+    pairAndRefresh();
+  </script>
+</body>
+</html>

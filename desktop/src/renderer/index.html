@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HomeCloud — Desktop Photo & Video Vault</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">HomeCloud</div>
+          <div class="brand-subtitle">Local Wi-Fi Photo Vault</div>
+        </div>
+      </div>
+
+      <div class="server-pill" id="serverStatusPill">
+        <span class="status-dot online"></span>
+        <div class="server-pill-info">
+          <div class="server-pill-title">Wi-Fi Server Online</div>
+          <div class="server-pill-sub" id="sidebarServerIp">Scanning LAN...</div>
+        </div>
+      </div>
+
+      <!-- Active Sync Live Card -->
+      <div class="live-sync-card hidden" id="liveSyncCard">
+        <div class="live-sync-header">
+          <span class="pulse-ring"></span>
+          <span id="liveSyncDevice">Syncing from Phone...</span>
+        </div>
+        <div class="live-sync-bar-wrap">
+          <div class="live-sync-bar" id="liveSyncBar" style="width: 0%"></div>
+        </div>
+        <div class="live-sync-meta" id="liveSyncMeta">0 / 0 files</div>
+      </div>
+
+      <nav class="nav-section">
+        <div class="nav-label">LIBRARY</div>
+        <button class="nav-item active" data-view="gallery" data-filter="all">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <span>All Media</span>
+          <span class="badge" id="badgeAll">0</span>
+        </button>
+        <button class="nav-item" data-view="gallery" data-filter="photos">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+          <span>Photos</span>
+          <span class="badge" id="badgePhotos">0</span>
+        </button>
+        <button class="nav-item" data-view="gallery" data-filter="videos">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          <span>Videos</span>
+          <span class="badge" id="badgeVideos">0</span>
+        </button>
+        <button class="nav-item" data-view="gallery" data-filter="favorites">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          <span>Favorites</span>
+        </button>
+
+        <div class="nav-label" style="margin-top: 20px;">DEVICES & SYNC</div>
+        <button class="nav-item" data-view="devices">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          <span>Mobile Pairing</span>
+          <span class="badge highlight" id="badgeDevices">0</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Storage & Folder</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="storage-summary">
+          <div class="storage-row">
+            <span>Vault Size</span>
+            <strong id="sidebarTotalSize">0 MB</strong>
+          </div>
+          <div class="storage-path" id="sidebarStoragePath" title="Click to open folder">~/Pictures/HomeCloud</div>
+        </div>
+        <button class="btn-primary full-width" id="btnQuickPair">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Connect Phone (QR)</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <!-- Top Header -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1 id="viewTitle">All Media</h1>
+          <span class="subtitle-pill" id="viewSubtitle">Organized by YYYY/MM</span>
+        </div>
+        <div class="topbar-right">
+          <div class="search-box" id="searchBoxWrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search by date (2026-10), filename, or phone..." />
+          </div>
+          <button class="btn-secondary" id="btnOpenFolder" title="Open Backup Folder in Windows Explorer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            <span>Open Folder</span>
+          </button>
+          <button class="btn-secondary" id="btnRescan" title="Rescan Backup Folder">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- VIEW 1: GALLERY -->
+      <section class="view-section active" id="viewGallery">
+        <div id="galleryContainer" class="gallery-container"></div>
+      </section>
+
+      <!-- VIEW 2: MOBILE PAIRING & DEVICES -->
+      <section class="view-section" id="viewDevices">
+        <div class="pairing-grid">
+          <div class="card qr-card">
+            <div class="card-header">
+              <h2>Minimal Setup — Connect Your Mobile</h2>
+              <p>Connect your phone to the same Wi-Fi network as this PC. Your photos will automatically back up into date-organized folders.</p>
+            </div>
+
+            <div class="qr-tabs">
+              <button class="qr-tab active" id="tabNativeQr">Android App Pairing QR</button>
+              <button class="qr-tab" id="tabWebQr">Instant Mobile Web QR</button>
+            </div>
+
+            <div class="qr-display">
+              <img id="qrImage" src="" alt="HomeCloud QR Code" />
+              <div class="qr-details">
+                <div class="detail-item">
+                  <span class="detail-label">Desktop Name</span>
+                  <strong id="infoServerName">HomeCloud-PC</strong>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Local Wi-Fi Server URL</span>
+                  <code id="infoServerUrl">http://192.168.1.x:4820</code>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Pairing Code</span>
+                  <span class="pair-code" id="infoPairCode">------</span>
+                </div>
+                <div class="detail-item">
+                  <span class="detail-label">Mobile Web Companion</span>
+                  <code id="infoMobileWebUrl">http://192.168.1.x:4820/mobile</code>
+                </div>
+              </div>
+            </div>
+
+            <div class="steps-box">
+              <div class="step">
+                <span class="step-num">1</span>
+                <div><strong>Auto-Discovery on Wi-Fi:</strong> Open the <em>HomeCloud Mobile</em> Android app on your phone. Tap <strong>"Auto-Find Desktop on Wi-Fi"</strong> or scan the QR code above.</div>
+              </div>
+              <div class="step">
+                <span class="step-num">2</span>
+                <div><strong>Automatic Wi-Fi Sync:</strong> Whenever your phone joins this Wi-Fi, new photos & videos are automatically detected, deduplicated, and backed up to your PC under <code>YYYY/MM/</code>.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card devices-card">
+            <div class="card-header">
+              <h2>Paired Mobile Devices</h2>
+              <p>Phones linked to this HomeCloud Desktop server</p>
+            </div>
+            <div id="devicesList" class="devices-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 3: SETTINGS -->
+      <section class="view-section" id="viewSettings">
+        <div class="settings-container">
+          <div class="card">
+            <h2>Backup Destination & Organization</h2>
+            <p class="muted">One-way backup ensures photos deleted from your phone remain safely stored on your PC.</p>
+
+            <div class="setting-row">
+              <div style="flex:1;">
+                <div class="setting-title">HomeCloud Storage Folder</div>
+                <div class="setting-desc" id="settingsStorageDir">D:\Phone Backup\Cloud</div>
+                <div style="display:flex;gap:8px;margin-top:8px;">
+                  <input type="text" id="inputStoragePath" value="D:\Phone Backup\Cloud" style="flex:1;background:#090d16;border:1px solid #334155;color:#f8fafc;padding:7px 10px;border-radius:8px;font-size:13px;" />
+                  <button class="btn-primary" id="btnSaveStoragePath" style="padding:7px 14px;">Save Path</button>
+                </div>
+              </div>
+              <div class="setting-actions">
+                <button class="btn-secondary" id="btnChangeFolder">Browse Folder...</button>
+                <button class="btn-secondary" id="btnOpenFolder2">Open in Explorer</button>
+              </div>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">Keep Backup Safe When Deleted on Phone</div>
+                <div class="setting-desc">When ON, deleting photos or videos from your phone will <strong>NEVER</strong> automatically delete them from <code>D:\Phone Backup\Cloud</code>. Turn OFF only if you want phone deletions mirrored.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleProtectFromPhoneDelete" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">Organize by Capture Date (YYYY/MM)</div>
+                <div class="setting-desc">Automatically sort photos into Year and Month subfolders (e.g. <code>2026/10/IMG_001.jpg</code>) using EXIF & capture timestamps.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleOrganizeByDate" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">Separate Subfolders per Device (Multi-Phone)</div>
+                <div class="setting-desc">When ON, each phone backs up into its own device subfolder (e.g. <code>D:\Phone Backup\Cloud\Samsung S24\2026\10\</code>). When OFF, all phones merge into <code>YYYY\MM</code>.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="toggleOrganizeByDevice" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">SHA-256 Content Deduplication</div>
+                <div class="setting-desc">Prevents duplicate uploads even if you re-sync or reinstall the mobile app.</div>
+              </div>
+              <span class="pill-enabled">Always Active</span>
+            </div>
+
+            <div class="setting-row">
+              <div>
+                <div class="setting-title">Available Network Interfaces (LAN IPs)</div>
+                <div class="setting-desc" id="settingsNetworkList">Detecting...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Lightbox Modal for Photo / Video Preview -->
+  <div class="lightbox hidden" id="lightbox">
+    <div class="lightbox-backdrop" id="lightboxBackdrop"></div>
+    <div class="lightbox-content">
+      <div class="lightbox-topbar">
+        <div class="lightbox-title" id="lightboxTitle">IMG_0001.JPG</div>
+        <div class="lightbox-actions">
+          <button class="btn-icon" id="lightboxFavBtn" title="Toggle Favorite">♥</button>
+          <button class="btn-secondary" id="lightboxRevealBtn">Show in Explorer</button>
+          <button class="btn-icon" id="lightboxCloseBtn" title="Close (Esc)">✕</button>
+        </div>
+      </div>
+      <div class="lightbox-stage" id="lightboxStage"></div>
+      <div class="lightbox-meta" id="lightboxMeta"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
